@@ -10,7 +10,7 @@
 
 typedef struct s_TreeNode
 {
-	char				*data;
+	void				*data;
 	struct s_TreeNode	*left;
 	struct s_TreeNode	*right;
 }				t_TreeNode;
