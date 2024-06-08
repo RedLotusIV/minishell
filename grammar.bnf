@@ -1,0 +1,17 @@
+<command_line>			::= <cmd> | <cmd> <pipe_seq>
+
+<pipe_seq>				::= '|' <cmd> | '|' <cmd> <pipe_seq>
+
+<cmd>					::= <word> <arguments> {redirection_seq} | <word> {redirection_seq}
+		<arguments>		::= <argument> | <argument> <arguments>
+		<argument>		::= <word>
+
+<redirection_seq> 		::= <redirection> | <redirection> <redirection_seq>
+
+<redirection> 			::= <input_redir> | <output_redir> | <append_redir>
+	<input_redir>		::= '<' <filename>
+	<output_redir>		::= '>' <filename>
+	<append_redir> 		::= '>>' <filename>
+	<here_document>		::= '<<' <filename>
+
+<filename>				::= <word>

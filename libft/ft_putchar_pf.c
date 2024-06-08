@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   ft_putchar_pf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: amouhand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 22:01:52 by amouhand          #+#    #+#             */
-/*   Updated: 2024/05/20 22:39:02 by amouhand         ###   ########.fr       */
+/*   Created: 2023/11/27 23:22:03 by amouhand          #+#    #+#             */
+/*   Updated: 2024/03/18 05:32:53 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "libft.h"
 
-# include "minishell.h"
-
-#endif
+int	ft_putchar_pf(char c)
+{
+	return (write(1, &c, 1));
+}

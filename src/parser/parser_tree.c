@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   parser_tree.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 18:44:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/05/22 10:22:57 by amouhand         ###   ########.fr       */
+/*   Created: 2024/05/21 23:54:21 by amouhand          #+#    #+#             */
+/*   Updated: 2024/05/22 09:16:35 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "../../include/minishell.h"
 
-# include "minishell.h"
-# include "lexer.h"
+t_TreeNode	*build_tree(t_token *head)
+{
+	t_TreeNode	*root;
 
-char		**mini_parsing(char **commands);
-int			count_parse(char **commands);
-void		free_strings(char **strings);
-void		free_parser(t_parser *s);
-char		**duplicate_pointer_array(char **commands);
-
-#endif
+	
+}
