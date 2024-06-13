@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/08 02:53:29 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/08 22:44:31 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_TreeNode	*root;
+	t_pipe	*root;
 
 	(void)env;
 	if (ac != 1 || av[1])
@@ -28,10 +28,10 @@ int	main(int ac, char **av, char **env)
 	return (0);
 }
 
-t_TreeNode	*readfrom(void)
+t_pipe	*readfrom(void)
 {
 	t_parser	*parser;
-	t_TreeNode	*root = NULL;
+	t_pipe		*root = NULL;
 	// t_cmd		*head;
 
 	while (1)

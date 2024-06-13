@@ -30,26 +30,39 @@ typedef struct	s_token
 	struct s_token	*next;
 }				t_token;
 
-typedef struct s_TreeNode
+typedef enum s_pipe_type
 {
-	struct s_token		*token;
-	struct s_TreeNode	*left;
-	struct s_TreeNode	*right;
-}				t_TreeNode;
+	PIPE_CMD,
+	PIPE_PIPE
+} t_pipe_type;
+
+typedef struct s_redirection
+{
+	t_token	*redir;
+	char	*arg;
+}				t_redirection;
 
 typedef struct s_cmd
 {
 	char			*cmd;
 	char			**args;
-	t_token			*redir;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
+	t_redirection	*redir;
 }				t_cmd;
+
+typedef struct s_pipe
+{
+	struct s_pipe	*right;
+	t_pipe_type  	left_type;
+	union
+	{
+		struct s_pipe *pipe;
+		t_cmd         *cmd;
+	}	left;
+}				t_pipe;
 
 typedef struct	s_parser
 {
 	char	*line;
-	char	**commands;
 	t_token	*head;
 	char	**result;
 }				t_parser;
@@ -60,7 +73,7 @@ typedef struct	s_parser
 # include "parser.h"
 # include "utils.h"
 
-t_TreeNode	*build_tree(t_token *head);
-t_TreeNode	*readfrom(void);
+t_pipe	*build_tree(t_token *head);
+t_pipe	*readfrom(void);
 
 #endif
