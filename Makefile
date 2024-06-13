@@ -6,7 +6,7 @@
 #    By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 22:18:52 by amouhand          #+#    #+#              #
-#    Updated: 2024/06/13 00:39:09 by amouhand         ###   ########.fr        #
+#    Updated: 2024/06/13 08:08:40 by amouhand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) $(SPECIALFLAGS) $(OBJ) -g -Llibft -lft -o $(NAME)
 
 $(LIBFT):
-	@make -C libft
+	@make -s -C libft
 
 %.o : %.c
 	@$(CC) $(CFLAGS) -g -c $< -o $@

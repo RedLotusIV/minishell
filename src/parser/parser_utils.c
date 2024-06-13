@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:45:41 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/13 08:04:45 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/13 18:17:18 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	**mini_parsing(char *command)
 	int		j;
 	int		k;
 	int		count;
+	int 	l;
 
 	if (!command)
 		return (NULL);
@@ -38,25 +39,64 @@ char	**mini_parsing(char *command)
 			|| command[i] == '\v' || command[i] == '\f' || command[i] == '\r')
 			i++;
 		j = i;
-			if (command[i] && (command[i] == '|' || command[i] == '<' || command[i] == '>'))
-			{
-				if (command[i + 1] == command[i] && command[i] != '|')
-					i += 2;
-				else
-					i++;
-			}
-			else if (command[i] && (command[i] != '|' && command[i] != '<' && command[i] != '>'))
-			{
-				while (command[i] && command[i] != '|' && command[i] != '<' && command[i] != '>'
-				&& command[i] != ' ' && command[i] != '\t' && command[i] != '\n')
-					i++;
-			}
+		if (command[i] && (command[i] == '|' || command[i] == '<' || command[i] == '>'))
+		{
+			if (command[i + 1] == command[i] && command[i] != '|')
+				i += 2;
+			else
+				i++;
+		}
+		else if (command[i] && (command[i] != '|' && command[i] != '<' && command[i] != '>'))
+		{
+			while (command[i] && command[i] != '|' && command[i] != '<' && command[i] != '>'
+			&& command[i] != ' ' && command[i] != '\t' && command[i] != '\n')
+				i++;
+		}
 		if (i != j)
 		{
-			result[k] = ft_substr(command, j, i - j);
+			l = 0;
+			result[k] = malloc(i - j + 1);
+			printf("size = %d\n", i - j);
 			if (!result[k])
 				return (NULL);
-			result[k] = remove_matching_double_quotes(result[k]);
+			while (j < i)
+			{
+				if (command[j] == '\"')
+				{
+					j++;
+					while (command[j] && command[j] != '\"')
+					{
+						result[k][l] = command[j];
+						j++;
+						l++;
+					}
+					if (command[j] == '\"')
+						j++;
+					else
+						break;
+				}
+				else if (command[j] == '\'')
+				{
+					j++;
+					while (command[j] && command[j] != '\'')
+					{
+						result[k][l] = command[j];
+						j++;
+						l++;
+					}
+					if (command[j] == '\'')
+						j++;
+					else
+						break;
+				}
+				else if (command[j])
+				{
+					result[k][l] = command[j];
+					l++;
+					j++;
+				}
+			}
+			result[k][l] = '\0';
 			k++;
 		}
 	}
