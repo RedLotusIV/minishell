@@ -44,7 +44,6 @@ typedef struct s_redirection
 
 typedef struct s_cmd
 {
-	char			*cmd;
 	char			**args;
 	t_redirection	*redir;
 }				t_cmd;

@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:45:41 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/13 18:17:18 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/13 18:22:44 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,10 @@ char	**mini_parsing(char *command)
 		if (i != j)
 		{
 			l = 0;
+			// dont allocate memory correctly
+			// should have a function to count the string length without the quotes if there is any
+			// same logic as the next while loop
 			result[k] = malloc(i - j + 1);
-			printf("size = %d\n", i - j);
 			if (!result[k])
 				return (NULL);
 			while (j < i)

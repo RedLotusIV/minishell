@@ -6,7 +6,7 @@
 #    By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 22:18:52 by amouhand          #+#    #+#              #
-#    Updated: 2024/06/13 08:08:40 by amouhand         ###   ########.fr        #
+#    Updated: 2024/06/13 19:26:01 by amouhand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SPECIALFLAGS = -lreadline -lhistory
 
 SRC =	src/main.c src/utils/utils.c src/parser/parser_utils.c src/parser/parser.c\
 		src/lexer/lexer.c src/lexer/lexer_utils.c src/parser/parser_tree.c\
+		src/parser/parser_cmd.c\
 
 OBJ = $(SRC:.c=.o)
 
