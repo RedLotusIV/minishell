@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/13 20:13:12 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/14 15:58:07 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 	// i should then allocate the number of arguments i have in each command as a char **
 	// so in the end i should have a doubly linked list of commands, each command has a char ** of arguments and a t_token of redirections
 	// which will make it so easy to be executed in the execution part, with pipes and redirections and everything
-// }
+// }ex
 t_cmd	**parse_cmd(t_token *head)
 {
 	t_cmd	**cmd;
@@ -38,7 +38,7 @@ t_cmd	**parse_cmd(t_token *head)
 			count++;
 		token_tmp = token_tmp->next;
 	}
-	cmd = malloc(sizeof(t_cmd) * (count + 2));
+	cmd = malloc(sizeof(t_cmd *) * (count + 2));
 	if (!cmd)
 		return (NULL);
 	allocate_cmd(cmd, head);
@@ -98,17 +98,17 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 		else if (!current)
 			break ;
 		cmd[i]->args = malloc(sizeof(char *) * (count + 1));
-		if (!cmd[i] || !cmd[i]->args)
+		if (cmd[i]->args)
 			return ;
 		cmd[i]->args[count] = NULL;
-		if (flag == 1)
+		if (flag)
+		{
 			cmd[i]->redir = malloc(sizeof(t_redirection));
+			cmd[i]->redir->redir = redirect;
+			cmd[i]->redir->arg = file->value;
+		}
 		else
 			cmd[i]->redir = NULL;
-		if (!cmd[i] || !cmd[i]->redir)
-			return ;
-		cmd[i]->redir->redir = redirect;
-		cmd[i]->redir->arg = file->value;
 		i++;
 	}
 }
