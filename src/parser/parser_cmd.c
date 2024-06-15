@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/15 17:31:11 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/15 19:34:16 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_cmd	**parse_cmd(t_token *head)
 	tmp = cmd;
 	for (int i = 0 ; tmp[i] ; i++)
 	{
-		printf("-------------------------\n");
 		for (int j = 0 ; tmp[i]->args[j] ; j++)
 			printf("arg[%d] : %s at command %d\n", j + 1, tmp[i]->args[j], i + 1);
 		if (tmp[i]->redir)
@@ -148,3 +147,80 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 	}
 	cmd[i] = NULL;
 }
+
+// #include "../../include/parser.h"
+
+// t_cmd	**parse_cmd(t_token *head) {
+//     t_cmd	**cmd;
+//     t_token *token_tmp;
+//     int count = 0;
+
+//     // Count commands
+//     token_tmp = head;
+//     while (token_tmp) {
+//         if (token_tmp->type == PIPE) count++;
+//         token_tmp = token_tmp->next;
+//     }
+
+//     // Allocate commands array
+//     cmd = malloc(sizeof(t_cmd *) * (count + 2)); // +1 for last command, +1 for NULL terminator
+//     if (!cmd) return (NULL);
+
+//     allocate_cmd(cmd, head);
+
+//     // Debug print commands
+//     for (int i = 0; cmd[i] != NULL; i++) {
+//         for (int j = 0; cmd[i]->args && cmd[i]->args[j]; j++) {
+//             printf("%s\n", cmd[i]->args[j]);
+//         }
+//         if (cmd[i]->redir) {
+//             printf("%s\n", cmd[i]->redir->redir->value);
+//             printf("%s\n", cmd[i]->redir->arg);
+//         }
+//     }
+//     return (cmd);
+// }
+
+// void allocate_cmd(t_cmd **cmd, t_token *head) {
+//     int i = 0, count = 0, flag = 0;
+//     t_token *current = head, *before = head, *redirect = NULL, *file = NULL;
+
+//     while (current) {
+//         count = 0; // Reset count for each command
+//         flag = 0; // Reset flag for each command
+//         while (current && current->type != PIPE) {
+//             if (current->type == WORD && (before == head || before->type == PIPE || before->type == REDIR)) {
+//                 count++;
+//             } else if (current->type == REDIR) {
+//                 flag = 1;
+//                 redirect = current;
+//                 if (current->next && current->next->type == WORD) {
+//                     file = current->next;
+//                     current = current->next; // Skip file token
+//                 }
+//             }
+//             before = current;
+//             current = current->next;
+//         }
+
+//         cmd[i] = malloc(sizeof(t_cmd)); // Allocate command structure
+//         if (!cmd[i]) return; // Check allocation
+
+//         cmd[i]->args = malloc(sizeof(char *) * (count + 1)); // +1 for NULL terminator
+//         if (!cmd[i]->args) return; // Check allocation
+//         cmd[i]->args[count] = NULL; // NULL terminate args array
+
+//         if (flag) {
+//             cmd[i]->redir = malloc(sizeof(t_redirection)); // Allocate redirection
+//             if (!cmd[i]->redir) return; // Check allocation
+//             cmd[i]->redir->redir = redirect;
+//             cmd[i]->redir->arg = file ? file->value : NULL;
+//         } else {
+//             cmd[i]->redir = NULL;
+//         }
+
+//         if (current && current->type == PIPE) current = current->next; // Skip pipe token
+//         i++;
+//     }
+//     cmd[i] = NULL; // NULL terminate the command array
+// }
