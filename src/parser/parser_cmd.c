@@ -145,46 +145,46 @@ void add_redirection(t_cmd *cmd, t_token *redir_token, char *arg)
 }
 /* Potential issues and improvements for parser_cmd.c */
 
-1. Memory Leak Risk:
-- In `parse_cmd`, if `allocate_cmd` fails and returns due to an allocation failure, the memory allocated for `cmd` is not freed.
-- In `allocate_cmd`, if allocation for `cmd[i]` or `cmd[i]->args` fails after some commands have already been allocated, there's no cleanup for previously allocated commands.
-- In `add_redirection`, if `strdup` fails due to memory allocation failure, `new_redir` is not freed.
+// 1. Memory Leak Risk:
+// - In `parse_cmd`, if `allocate_cmd` fails and returns due to an allocation failure, the memory allocated for `cmd` is not freed.
+// - In `allocate_cmd`, if allocation for `cmd[i]` or `cmd[i]->args` fails after some commands have already been allocated, there's no cleanup for previously allocated commands.
+// - In `add_redirection`, if `strdup` fails due to memory allocation failure, `new_redir` is not freed.
 
-2. Error Handling:
-- The function `allocate_cmd` does not have a return type and cannot signal failure to `parse_cmd`, potentially leading to use of partially initialized command structures.
+// 2. Error Handling:
+// - The function `allocate_cmd` does not have a return type and cannot signal failure to `parse_cmd`, potentially leading to use of partially initialized command structures.
 
-3. Redirection Handling:
-- In `parse_cmd`, the line `tmp[i]->redirections = tmp[i]->redirections->next;` modifies the command's redirections list during printing, which could lead to issues if the list needs to be iterated over again.
+// 3. Redirection Handling:
+// - In `parse_cmd`, the line `tmp[i]->redirections = tmp[i]->redirections->next;` modifies the command's redirections list during printing, which could lead to issues if the list needs to be iterated over again.
 
-4. Code Duplication:
-- The pattern of checking token types against multiple values is repeated multiple times. This could be simplified with a helper function.
+// 4. Code Duplication:
+// - The pattern of checking token types against multiple values is repeated multiple times. This could be simplified with a helper function.
 
-5. Potential Infinite Loop:
-- If the token list has a cycle, the while loops in `parse_cmd` and `allocate_cmd` could result in an infinite loop.
+// 5. Potential Infinite Loop:
+// - If the token list has a cycle, the while loops in `parse_cmd` and `allocate_cmd` could result in an infinite loop.
 
-6. Unnecessary Variables:
-- The variable `flag` in `allocate_cmd` is set but never used.
+// 6. Unnecessary Variables:
+// - The variable `flag` in `allocate_cmd` is set but never used.
 
-7. Inconsistent Error Handling:
-- There's inconsistent handling of memory allocation failures (e.g., not always checking the result of `malloc` or `strdup`).
+// 7. Inconsistent Error Handling:
+// - There's inconsistent handling of memory allocation failures (e.g., not always checking the result of `malloc` or `strdup`).
 
-8. Potential Segmentation Fault:
-- If `current->next` is NULL after a redirection token, accessing `current->type` without checking could lead to a segmentation fault.
+// 8. Potential Segmentation Fault:
+// - If `current->next` is NULL after a redirection token, accessing `current->type` without checking could lead to a segmentation fault.
 
-9. Lack of Comments:
-- The code could benefit from more comments explaining the logic, especially in complex parts like redirection handling.
+// 9. Lack of Comments:
+// - The code could benefit from more comments explaining the logic, especially in complex parts like redirection handling.
 
-10. Hardcoded Array Sizes:
-- Using `sizeof(char *) * (count + 1)` assumes all arguments will fit, which might not always be the case if there are more complex parsing rules in the future.
+// 10. Hardcoded Array Sizes:
+// - Using `sizeof(char *) * (count + 1)` assumes all arguments will fit, which might not always be the case if there are more complex parsing rules in the future.
 
-/* Proposed Fixes */
-- Implement comprehensive error handling and cleanup paths for memory allocation failures.
-- Introduce a return type for `allocate_cmd` to signal success or failure.
-- Avoid modifying the command's redirection list during iteration in `parse_cmd`.
-- Create a helper function to check token types, reducing code duplication.
-- Add checks or redesign to prevent potential infinite loops with malformed input.
-- Remove or utilize unused variables like `flag`.
-- Standardize and ensure all memory allocation calls are checked for failure.
-- Add null checks where dereferencing could lead to segmentation faults.
-- Increase the use of comments to improve code readability and maintainability.
-- Consider dynamic resizing for arrays or lists if fixed sizes could be exceeded.
+// /* Proposed Fixes */
+// - Implement comprehensive error handling and cleanup paths for memory allocation failures.
+// - Introduce a return type for `allocate_cmd` to signal success or failure.
+// - Avoid modifying the command's redirection list during iteration in `parse_cmd`.
+// - Create a helper function to check token types, reducing code duplication.
+// - Add checks or redesign to prevent potential infinite loops with malformed input.
+// - Remove or utilize unused variables like `flag`.
+// - Standardize and ensure all memory allocation calls are checked for failure.
+// - Add null checks where dereferencing could lead to segmentation faults.
+// - Increase the use of comments to improve code readability and maintainability.
+// - Consider dynamic resizing for arrays or lists if fixed sizes could be exceeded.
