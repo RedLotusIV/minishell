@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/15 19:34:16 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/15 21:31:00 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_cmd	**parse_cmd(t_token *head)
 		{
 			printf("redir   : %s at command %d\n", tmp[i]->redirections->redir->value, i + 1);
 			printf("file    : %s at command %d\n", tmp[i]->redirections->arg, i + 1);
+			tmp[i]->redirections = tmp[i]->redirections->next;
 		}
 	}
 	return (cmd);
@@ -76,6 +77,9 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 		count = 0;
 		flag = 0;
 		tmp_token = current;
+		cmd[i] = malloc(sizeof(t_cmd));
+		if (!cmd[i])
+			return ;
 		while (current && current->type != PIPE)
 		{
 			if (current->type == WORD && before->type != REDIR && before->type != PIPE
@@ -100,9 +104,6 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 				current = current->next;
 			}
 		}
-		cmd[i] = malloc(sizeof(t_cmd));
-		if (!cmd[i])
-			return ;
 		cmd[i]->args = malloc(sizeof(char *) * (count + 1));
 		if (!cmd[i]->args)
 			return ;
