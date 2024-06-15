@@ -38,14 +38,15 @@ typedef enum s_pipe_type
 
 typedef struct s_redirection
 {
-	t_token	*redir;
-	char	*arg;
+	t_token					*redir;
+	char					*arg;
+	struct s_redirection	*next;
 }				t_redirection;
 
 typedef struct s_cmd
 {
 	char			**args;
-	t_redirection	*redir;
+	t_redirection	*redirections;
 }				t_cmd;
 
 typedef struct s_pipe

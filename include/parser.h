@@ -24,6 +24,6 @@ char		**duplicate_pointer_array(char **commands);
 char		*remove_matching_double_quotes(char* str);
 t_cmd		**parse_cmd(t_token *head);
 void		allocate_cmd(t_cmd **cmd, t_token *head);
-
+void        add_redirection(t_cmd *cmd, t_token *redir_token, char *arg);
 
 #endif
