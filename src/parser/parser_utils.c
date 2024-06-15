@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:45:41 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/13 18:22:44 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/15 19:07:35 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	**mini_parsing(char *command)
 	int		k;
 	int		count;
 	int 	l;
+	char	tmp;
 
 	if (!command)
 		return (NULL);
@@ -33,13 +34,25 @@ char	**mini_parsing(char *command)
 	if (!result)
 		return (NULL);
 	printf("count = %d\n", count);
+	// <infile ls | grep "out here" > outfile
+	// <infile ls|"grep out">outfile
 	while (command[i])
 	{
 		while(command[i] == ' ' || command[i] == '\t' || command[i] == '\n'
 			|| command[i] == '\v' || command[i] == '\f' || command[i] == '\r')
 			i++;
 		j = i;
-		if (command[i] && (command[i] == '|' || command[i] == '<' || command[i] == '>'))
+		if (command[i] && (command[i] == '\"' || command[i] == '\''))
+		{
+			tmp = command[i];
+			i++;
+			while (command[i] && command[i] != tmp)
+				i++;
+			if (command[i] == tmp)
+				i++;
+		}
+		if (command[i] && (command[i] == '|' || command[i] == '<' || command[i] == '>')
+		&& (j == i))
 		{
 			if (command[i + 1] == command[i] && command[i] != '|')
 				i += 2;
@@ -110,6 +123,7 @@ int	count_parse(char *command)
 {
 	int	i;
 	int	l;
+	char tmp;
 
 	if (!command)
 		return (0);
@@ -128,12 +142,23 @@ int	count_parse(char *command)
 			else
 				i++;
 		}
+		else if (command[i] && (command[i] == '\"' || command[i] == '\''))
+		{
+			tmp = command[i];
+			i++;
+			while (command[i] && command[i] != tmp)
+				i++;
+			l++;
+			if (command[i] == tmp)
+				i++;
+		}
 		else if (command[i] && (command[i] != '|' && command[i] != '<' && command[i] != '>'))
 		{
+			if (command[i - 1] != tmp || !i)
+				l++;
 			while (command[i] && command[i] != '|' && command[i] != '<' && command[i] != '>'
 			 && command[i] != ' ' && command[i] != '\t' && command[i] != '\n')
 				i++;
-			l++;
 		}
 	}
 	return (l);

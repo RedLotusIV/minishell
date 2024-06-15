@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:10:13 by amouhand          #+#    #+#             */
-/*   Updated: 2024/05/22 10:15:04 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:40:31 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_token	*tokenizer(char **commands)
 	print_tokens(&head);
 	return (head);
 }
+
 void	give_type(t_token *token)
 {
 	if (!ft_strcmp(token->value, "|"))
@@ -51,6 +52,7 @@ void	give_type(t_token *token)
 	else
 		token->type = WORD;
 }
+
 int	token_init(t_token **head, char **commands)
 {
 	t_token	*tmp;
@@ -76,9 +78,10 @@ int	token_init(t_token **head, char **commands)
 	tmp->next = NULL;
 	return (0);
 }
+
 void	print_tokens(t_token **head)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = *head;
 	while (current)

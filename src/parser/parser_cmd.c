@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/14 16:44:12 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:31:11 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ t_cmd	**parse_cmd(t_token *head)
 	tmp = cmd;
 	for (int i = 0 ; tmp[i] ; i++)
 	{
-		for (int j = 0 ; tmp[i]->args && tmp[i]->args[j] ; j++)
-			printf("%s\n", tmp[i]->args[j]);
+		printf("-------------------------\n");
+		for (int j = 0 ; tmp[i]->args[j] ; j++)
+			printf("arg[%d] : %s at command %d\n", j + 1, tmp[i]->args[j], i + 1);
 		if (tmp[i]->redir)
 		{
-			printf("%s\n", tmp[i]->redir->redir->value);
-			printf("%s\n", tmp[i]->redir->arg);
+			printf("redir   : %s at command %d\n", tmp[i]->redir->redir->value, i + 1);
+			printf("file    : %s at command %d\n", tmp[i]->redir->arg, i + 1);
 		}
 	}
 	return (cmd);
@@ -65,6 +66,7 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 	t_token *file;
 	t_cmd	*tmp;
 	t_token *tmp_token;
+	t_token *before_tmp;
 	int flag;
 	int count;
 	
@@ -85,13 +87,25 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 				before = current;
 				current = current->next;
 			}
-			else if (current->type == WORD && before->type != WORD && before->type != PIPE)
+			else if (current->type == REDIR || current->type == PIPE || current->type == INPUT 
+			|| current->type == APPEND || current->type == HEREDOC)
 			{
-				redirect = before;
+				redirect = current;
 				before = current;
-				file = current;
 				current = current->next;
 				flag = 1;
+			}
+			else if (current->type == WORD && (before->type == REDIR || before->type == PIPE || before->type == INPUT 
+			|| before->type == APPEND || before->type == HEREDOC))
+			{
+				file = current;
+				before = current;
+				current = current->next;
+			}
+			else
+			{
+				before = current;
+				current = current->next;
 			}
 		}
 		cmd[i] = malloc(sizeof(t_cmd));
@@ -101,14 +115,20 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 		if (!cmd[i]->args)
 			return ;
 		tmp = cmd[i];
-		cmd[i]->args[count] = NULL;
+		before_tmp = tmp_token;
 		j = 0;
-		while(tmp->args[j])
+		while(tmp_token && tmp_token->type != PIPE)
 		{
-			tmp->args[j] = tmp_token->value;
-			j++;
+			if (tmp_token->type == WORD && (before_tmp->type != REDIR && before_tmp->type != PIPE
+				&& before_tmp->type != INPUT && before_tmp->type != APPEND && before_tmp->type != HEREDOC))
+			{
+				tmp->args[j] = ft_strdup(tmp_token->value);
+				j++;
+			}
+			before_tmp = tmp_token;
 			tmp_token = tmp_token->next;
 		}
+		tmp->args[j] = NULL;
 		if (flag)
 		{
 			cmd[i]->redir = malloc(sizeof(t_redirection));
@@ -128,80 +148,3 @@ void	allocate_cmd(t_cmd **cmd, t_token *head)
 	}
 	cmd[i] = NULL;
 }
-
-// #include "../../include/parser.h"
-
-// t_cmd	**parse_cmd(t_token *head) {
-//     t_cmd	**cmd;
-//     t_token *token_tmp;
-//     int count = 0;
-
-//     // Count commands
-//     token_tmp = head;
-//     while (token_tmp) {
-//         if (token_tmp->type == PIPE) count++;
-//         token_tmp = token_tmp->next;
-//     }
-
-//     // Allocate commands array
-//     cmd = malloc(sizeof(t_cmd *) * (count + 2)); // +1 for last command, +1 for NULL terminator
-//     if (!cmd) return (NULL);
-
-//     allocate_cmd(cmd, head);
-
-//     // Debug print commands
-//     for (int i = 0; cmd[i] != NULL; i++) {
-//         for (int j = 0; cmd[i]->args && cmd[i]->args[j]; j++) {
-//             printf("%s\n", cmd[i]->args[j]);
-//         }
-//         if (cmd[i]->redir) {
-//             printf("%s\n", cmd[i]->redir->redir->value);
-//             printf("%s\n", cmd[i]->redir->arg);
-//         }
-//     }
-//     return (cmd);
-// }
-
-// void allocate_cmd(t_cmd **cmd, t_token *head) {
-//     int i = 0, count = 0, flag = 0;
-//     t_token *current = head, *before = head, *redirect = NULL, *file = NULL;
-
-//     while (current) {
-//         count = 0; // Reset count for each command
-//         flag = 0; // Reset flag for each command
-//         while (current && current->type != PIPE) {
-//             if (current->type == WORD && (before == head || before->type == PIPE || before->type == REDIR)) {
-//                 count++;
-//             } else if (current->type == REDIR) {
-//                 flag = 1;
-//                 redirect = current;
-//                 if (current->next && current->next->type == WORD) {
-//                     file = current->next;
-//                     current = current->next; // Skip file token
-//                 }
-//             }
-//             before = current;
-//             current = current->next;
-//         }
-
-//         cmd[i] = malloc(sizeof(t_cmd)); // Allocate command structure
-//         if (!cmd[i]) return; // Check allocation
-
-//         cmd[i]->args = malloc(sizeof(char *) * (count + 1)); // +1 for NULL terminator
-//         if (!cmd[i]->args) return; // Check allocation
-//         cmd[i]->args[count] = NULL; // NULL terminate args array
-
-//         if (flag) {
-//             cmd[i]->redir = malloc(sizeof(t_redirection)); // Allocate redirection
-//             if (!cmd[i]->redir) return; // Check allocation
-//             cmd[i]->redir->redir = redirect;
-//             cmd[i]->redir->arg = file ? file->value : NULL;
-//         } else {
-//             cmd[i]->redir = NULL;
-//         }
-
-//         if (current && current->type == PIPE) current = current->next; // Skip pipe token
-//         i++;
-//     }
-//     cmd[i] = NULL; // NULL terminate the command array
-// }
