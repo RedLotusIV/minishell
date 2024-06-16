@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:45:41 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/15 19:07:35 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/16 12:36:46 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ char	**mini_parsing(char *command)
 	if (!result)
 		return (NULL);
 	printf("count = %d\n", count);
-	// <infile ls | grep "out here" > outfile
-	// <infile ls|"grep out">outfile
 	while (command[i])
 	{
 		while(command[i] == ' ' || command[i] == '\t' || command[i] == '\n'
@@ -178,38 +176,3 @@ void	free_strings(char **strings)
 		free(strings);
 }
 
-char	*remove_matching_double_quotes(char* str)
-{
-	int len;
-	int i;
-	int j;
-	int count;
-	char *result;
-
-	len = ft_strlen(str);
-	count = 0;
-	i = 0;
-	while(i < len)
-	{
-		if (str[i] == '\"')
-			count++;
-		i++;
-	}
-	result = malloc(len - count + 1);
-	if (!result)
-		return NULL;
-	j = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '\"')
-		{
-			result[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	result[j] = '\0';
-	free(str);
-	return (result);
-}

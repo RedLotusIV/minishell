@@ -63,8 +63,9 @@ typedef struct s_pipe
 typedef struct	s_parser
 {
 	char	*line;
-	t_token	*head;
 	char	**result;
+	t_token	*head;
+	t_cmd	**cmd;
 }				t_parser;
 
 // project libraries
@@ -73,7 +74,7 @@ typedef struct	s_parser
 # include "parser.h"
 # include "utils.h"
 
-t_pipe	*build_tree(t_token *head);
+t_pipe	*build_tree(t_cmd **cmd);
 t_pipe	*readfrom(void);
 
 #endif

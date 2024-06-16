@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/13 19:24:37 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/16 12:38:51 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_pipe	*readfrom(void)
 {
 	t_parser	*parser;
 	t_pipe		*root = NULL;
-	// t_cmd		*head;
 
 	while (1)
 	{
@@ -49,8 +48,8 @@ t_pipe	*readfrom(void)
 		parser->head = tokenizer(parser->result);
 		if (!parser->head)
 			return (NULL);
-		parse_cmd(parser->head);
-		// root = build_tree(parser->head);
+		parser->cmd = parse_cmd(parser->head);
+		root = build_tree(parser->cmd);
 	}
 	return (root);
 }
