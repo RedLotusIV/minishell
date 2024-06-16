@@ -41,7 +41,7 @@ t_cmd	**parse_cmd(t_token *head)
 		for (int j = 0 ; tmp[i]->args[j] ; j++)
 			printf("arg[%d] : %s at command %d\n", j + 1, tmp[i]->args[j], i + 1);
 		redirections = tmp[i]->redirections;
-		if (redirections)
+		while (redirections)
 		{
 			printf("redir   : %s at command %d\n", redirections->redir->value, i + 1);
 			printf("file    : %s at command %d\n", redirections->arg, i + 1);
@@ -130,15 +130,17 @@ void add_redirection(t_cmd *cmd, t_token *redir_token, char *arg)
 	t_redirection *current;
 
 	new_redir = malloc(sizeof(t_redirection));
+	if (!new_redir)
+		return ;
     new_redir->redir = redir_token;
     new_redir->arg = strdup(arg);
     new_redir->next = NULL;
-    if (cmd->redirections == NULL)
+    if (!cmd->redirections)
         cmd->redirections = new_redir;
 	else 
 	{
         current = cmd->redirections;
-        while (current->next != NULL)
+        while (current->next)
             current = current->next;
         current->next = new_redir;
     }
