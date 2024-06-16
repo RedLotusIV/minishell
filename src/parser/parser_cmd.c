@@ -15,7 +15,6 @@
 t_cmd	**parse_cmd(t_token *head)
 {
 	t_cmd	**cmd;
-	t_token *token_tmp;
 	t_cmd **tmp;
 	t_redirection *redirections;
 	int i;
@@ -23,151 +22,160 @@ t_cmd	**parse_cmd(t_token *head)
 
 	i = 0;
 	count = 0;
-	token_tmp = head;
-	while (token_tmp)
-	{
-		if (token_tmp->type == PIPE)
-			count++;
-		token_tmp = token_tmp->next;
-	}
+	count = count_pipes(head);
 	cmd = malloc(sizeof(t_cmd *) * (count + 2));
 	if (!cmd)
 		return (NULL);
 	allocate_cmd(cmd, head);
 	tmp = cmd;
-	for (int i = 0 ; tmp[i] ; i++)
-	{
-		printf("+++++++++++++++ command [%d] +++++++++++++++\n", i + 1);
-		for (int j = 0 ; tmp[i]->args[j] ; j++)
-			printf("arg[%d] : %s at command %d\n", j + 1, tmp[i]->args[j], i + 1);
-		redirections = tmp[i]->redirections;
-		while (redirections)
-		{
-			printf("redir   : %s at command %d\n", redirections->redir->value, i + 1);
-			printf("file    : %s at command %d\n", redirections->arg, i + 1);
-			redirections = redirections->next;
-		}
-	}
+	print_command_details(tmp);
 	return (cmd);
 }
-void	allocate_cmd(t_cmd **cmd, t_token *head)
+void process_token(t_token **current, t_token **before, t_cmd **cmd, int i)
 {
-	int i;
-	int j;
-	t_token	*current;
-	t_token	*before;
-	t_token *redirect;
-	t_cmd	*tmp;
-	t_token *tmp_token;
-	t_token *before_tmp;
+    t_token *redirect;
+    while (*current && (*current)->type != PIPE) 
+	{
+        if ((*current)->type == WORD && (*before)->type != REDIR && (*before)->type != PIPE &&
+            (*before)->type != INPUT && (*before)->type != APPEND && (*before)->type != HEREDOC)
+		{
+            *before = *current;
+            *current = (*current)->next;
+        }
+		else if ((*current)->type == REDIR || (*current)->type == PIPE || (*current)->type == INPUT ||
+                   (*current)->type == APPEND || (*current)->type == HEREDOC)
+		{
+            redirect = *current;
+            *before = *current;
+            *current = (*current)->next;
+            if (*current && (*current)->type == WORD)
+                add_redirection(cmd[i], redirect, (*current)->value);
+        }
+		else
+		{
+            *before = *current;
+            *current = (*current)->next;
+        }
+    }
+}
+
+int count_args(t_token *start, t_token *end)
+{
+    int count;
+
+	count = 0;
+    while (start && start != end)
+	{
+        if (start->type == WORD && start->type != REDIR && start->type != PIPE &&
+            start->type != INPUT && start->type != APPEND && start->type != HEREDOC)
+            count++;
+        start = start->next;
+    }
+    return (count);
+}
+
+void fill_args(t_token *start, t_token *end, t_cmd *cmd)
+{
+    int j;
+    t_token *before_tmp;
+
+	j = 0;
+	before_tmp = start;
+    while (start && start != end)
+	{
+        if (start->type == WORD && (before_tmp->type != REDIR && before_tmp->type != INPUT 
+		&& before_tmp->type != APPEND && before_tmp->type != HEREDOC))
+		{
+            cmd->args[j] = ft_strdup(start->value);
+            j++;
+        }
+        before_tmp = start;
+        start = start->next;
+    }
+    cmd->args[j] = NULL;
+}
+
+void allocate_cmd(t_cmd **cmd, t_token *head)
+{
+    int i;
 	int count;
-	
+    t_token *current;
+    t_token *before;
+	t_token *tmp_token;
+    
 	i = 0;
 	current = head;
 	before = head;
-	while (current)
+    while (current)
 	{
-		count = 0;
-		tmp_token = current;
-		cmd[i] = malloc(sizeof(t_cmd));
-		if (!cmd[i])
-			return ;
-		while (current && current->type != PIPE)
+        tmp_token = current;
+        cmd[i] = malloc(sizeof(t_cmd));
+        if (!cmd[i])
+			return;
+        process_token(&current, &before, cmd, i);
+        int count = count_args(tmp_token, current);
+        cmd[i]->args = malloc(sizeof(char *) * (count + 1));
+        if (!cmd[i]->args)
+			return;
+        fill_args(tmp_token, current, cmd[i]);
+        if (current && current->type == PIPE)
 		{
-			if (current->type == WORD && before->type != REDIR && before->type != PIPE
-				&& before->type != INPUT && before->type != APPEND && before->type != HEREDOC)
-			{
-				count++;
-				before = current;
-				current = current->next;
-			}
-			else if (current->type == REDIR || current->type == PIPE || current->type == INPUT 
-			|| current->type == APPEND || current->type == HEREDOC)
-			{
-				redirect = current;
-				before = current;
-				current = current->next;
-				if (current && current->type == WORD)
-					add_redirection(cmd[i], redirect, current->value);
-			}
-			else
-			{
-				before = current;
-				current = current->next;
-			}
-		}
-		cmd[i]->args = malloc(sizeof(char *) * (count + 1));
-		if (!cmd[i]->args)
-			return ;
-		tmp = cmd[i];
-		before_tmp = tmp_token;
-		j = 0;
-		while(tmp_token && tmp_token->type != PIPE)
-		{
-			if (tmp_token->type == WORD && (before_tmp->type != REDIR && before_tmp->type != PIPE
-				&& before_tmp->type != INPUT && before_tmp->type != APPEND && before_tmp->type != HEREDOC))
-			{
-				tmp->args[j] = ft_strdup(tmp_token->value);
-				j++;
-			}
-			before_tmp = tmp_token;
-			tmp_token = tmp_token->next;
-		}
-		tmp->args[j] = NULL;
-		if (current && current->type == PIPE)
-		{
-			before = current;
-			current = current->next;
-		}
-		i++;
-	}
-	cmd[i] = NULL;
+            before = current;
+            current = current->next;
+        }
+        i++;
+    }
+    cmd[i] = NULL;
 }
 
 void add_redirection(t_cmd *cmd, t_token *redir_token, char *arg)
 {
-    t_redirection *new_redir;
+	t_redirection *new_redir;
 	t_redirection *current;
 
 	new_redir = malloc(sizeof(t_redirection));
 	if (!new_redir)
 		return ;
-    new_redir->redir = redir_token;
-    new_redir->arg = strdup(arg);
-    new_redir->next = NULL;
-    if (!cmd->redirections)
-        cmd->redirections = new_redir;
+	new_redir->redir = redir_token;
+	new_redir->arg = strdup(arg);
+	new_redir->next = NULL;
+	if (!cmd->redirections)
+		cmd->redirections = new_redir;
 	else 
 	{
-        current = cmd->redirections;
-        while (current->next)
-            current = current->next;
-        current->next = new_redir;
+		current = cmd->redirections;
+		while (current->next)
+			current = current->next;
+		current->next = new_redir;
+	}
+}
+int count_pipes(t_token *head)
+{
+    int count;
+	t_token *tmp;
+
+	count = 0;
+	tmp = head;
+    while (tmp)
+	{
+        if (tmp->type == PIPE)
+			count++;
+        tmp = tmp->next;
+    }
+    return count;
+}
+void print_command_details(t_cmd **cmd)
+{
+    t_redirection *redirections;
+    for (int i = 0; cmd[i]; i++) {
+        printf("+++++++++++++++ command [%d] +++++++++++++++\n", i + 1);
+        for (int j = 0; cmd[i]->args[j]; j++)
+            printf("arg[%d] : %s at command %d\n", j + 1, cmd[i]->args[j], i + 1);
+        redirections = cmd[i]->redirections;
+        while (redirections) {
+            printf("redir   : %s at command %d\n", redirections->redir->value, i + 1);
+            printf("file    : %s at command %d\n", redirections->arg, i + 1);
+            redirections = redirections->next;
+        }
     }
 }
-/* Potential issues and improvements for parser_cmd.c */
-
-// 1. Memory Leak Risk:
-// - In `parse_cmd`, if `allocate_cmd` fails and returns due to an allocation failure, the memory allocated for `cmd` is not freed.
-// - In `allocate_cmd`, if allocation for `cmd[i]` or `cmd[i]->args` fails after some commands have already been allocated, there's no cleanup for previously allocated commands.
-// - In `add_redirection`, if `strdup` fails due to memory allocation failure, `new_redir` is not freed.
-
-// 2. Error Handling:
-// - The function `allocate_cmd` does not have a return type and cannot signal failure to `parse_cmd`, potentially leading to use of partially initialized command structures.
-
-// 4. Code Duplication:
-// - The pattern of checking token types against multiple values is repeated multiple times. This could be simplified with a helper function.
-
-// 5. Potential Infinite Loop:
-// - If the token list has a cycle, the while loops in `parse_cmd` and `allocate_cmd` could result in an infinite loop.
-
-// 7. Inconsistent Error Handling:
-// - There's inconsistent handling of memory allocation failures (e.g., not always checking the result of `malloc` or `strdup`).
-
-// /* Proposed Fixes */
-// - Implement comprehensive error handling and cleanup paths for memory allocation failures.
-// - Introduce a return type for `allocate_cmd` to signal success or failure.
-// - Create a helper function to check token types, reducing code duplication.
-// - Add checks or redesign to prevent potential infinite loops with malformed input.
-// - Standardize and ensure all memory allocation calls are checked for failure.
-// - Increase the use of comments to improve code readability and maintainability.
