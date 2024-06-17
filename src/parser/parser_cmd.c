@@ -14,9 +14,9 @@
 
 t_cmd	**parse_cmd(t_token *head)
 {
-	t_cmd			**cmd;
-	t_cmd			**tmp;
-	int				count;
+	t_cmd	**cmd;
+	t_cmd	**tmp;
+	int		count;
 
 	count = 0;
 	count = count_pipes(head);

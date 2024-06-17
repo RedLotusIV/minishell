@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 12:02:55 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/16 12:27:57 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:35:03 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	fill_args(t_token *start, t_token *end, t_cmd *cmd)
 	while (start && start != end && start->type != PIPE)
 	{
 		if (start->type == WORD && (before_tmp->type != REDIR
-				&& before_tmp->type != INPUT
-				&& before_tmp->type != APPEND && before_tmp->type != HEREDOC))
+				&& before_tmp->type != INPUT && before_tmp->type != APPEND
+				&& before_tmp->type != HEREDOC))
 		{
 			cmd->args[j] = ft_strdup(start->value);
 			j++;
@@ -103,29 +103,30 @@ void	print_command_details(t_cmd **cmd)
 		j = 0;
 		while (cmd[i]->args[j])
 		{
-			printf("arg[%d] : %s at command %d\n", j + 1,
-				cmd[i]->args[j], i + 1);
+			printf("arg[%d] : %s at command %d\n", j + 1, cmd[i]->args[j], i
+				+ 1);
 			j++;
 		}
 		redirections = cmd[i]->redirections;
 		while (redirections)
 		{
-			printf("redir   : %s at command %d\n",
-				redirections->redir->value, i + 1);
+			printf("redir   : %s at command %d\n", redirections->redir->value, i
+				+ 1);
 			printf("file    : %s at command %d\n", redirections->arg, i + 1);
 			redirections = redirections->next;
 		}
 		i++;
 	}
+	printf("++++++++++++++++++++++++++++++++++++++++++++\n");
 }
 /*
-void allocate_cmd(t_cmd **cmd, t_token *head)
+void	allocate_cmd(t_cmd **cmd, t_token *head)
 {
-	int i;
-	int count;
-	t_token *current;
-	t_token *before;
-	t_token *tmp_token;
+	int		i;
+	int		count;
+	t_token	*current;
+	t_token	*before;
+	t_token	*tmp_token;
 
 	i = 0;
 	current = head;
