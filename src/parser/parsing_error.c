@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:37:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 20:24:01 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/17 21:27:57 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	checking_parsing(t_token *head)
 		if (current->type == PIPE)
 		{
 			if (!current->next)
+				return (parsing_error("|", 2));
+			else if (current == head)
 				return (parsing_error("|", 2));
 			else if (current->next->type != WORD)
 				(parsing_error("|", 2));
