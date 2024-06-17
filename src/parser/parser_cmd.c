@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/16 12:32:21 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:34:57 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ t_cmd	**parse_cmd(t_token *head)
 {
 	t_cmd			**cmd;
 	t_cmd			**tmp;
-	int				i;
 	int				count;
 
-	i = 0;
 	count = 0;
 	count = count_pipes(head);
 	cmd = malloc(sizeof(t_cmd *) * (count + 2));

@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:44:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/16 12:39:45 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:36:13 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ int			count_pipes(t_token *head);
 void		print_command_details(t_cmd **cmd);
 void		initialize_cmd(t_cmd **cmd, t_token *current, int i);
 t_cmd		**parse_cmd(t_token *head);
-
+int			pipes_in_cmds(t_cmd **cmd);
+void		print_tree(t_pipe *root);
 #endif

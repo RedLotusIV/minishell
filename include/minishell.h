@@ -32,8 +32,8 @@ typedef struct	s_token
 
 typedef enum s_pipe_type
 {
-	PIPE_CMD,
-	PIPE_PIPE
+	PIPE_CMD = 1,
+	PIPE_PIPE = 2,
 } t_pipe_type;
 
 typedef struct s_redirection
@@ -51,14 +51,16 @@ typedef struct s_cmd
 
 typedef struct s_pipe
 {
-	struct s_pipe	*right;
+	t_cmd			*right;
 	t_pipe_type  	left_type;
-	union
-	{
-		struct s_pipe *pipe;
-		t_cmd         *cmd;
-	}	left;
+	union s_left	*left;
 }				t_pipe;
+
+typedef union s_left
+{
+	struct s_pipe	*pipe;
+	t_cmd			*cmd;
+}	t_left;
 
 typedef struct	s_parser
 {
