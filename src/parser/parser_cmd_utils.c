@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 12:02:55 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 19:35:03 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:38:00 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,23 @@ int	count_pipes(t_token *head)
 void	print_command_details(t_cmd **cmd)
 {
 	t_redirection	*redirections;
+	t_cmd			**tmp;
 	int				i;
 	int				j;
 
+	tmp = cmd;
 	i = 0;
-	while (cmd[i])
+	while (tmp[i])
 	{
 		printf("+++++++++++++++ command [%d] +++++++++++++++\n", i + 1);
 		j = 0;
-		while (cmd[i]->args[j])
+		while (tmp[i]->args[j])
 		{
-			printf("arg[%d] : %s at command %d\n", j + 1, cmd[i]->args[j], i
+			printf("arg[%d] : %s at command %d\n", j + 1, tmp[i]->args[j], i
 				+ 1);
 			j++;
 		}
-		redirections = cmd[i]->redirections;
+		redirections = tmp[i]->redirections;
 		while (redirections)
 		{
 			printf("redir   : %s at command %d\n", redirections->redir->value, i

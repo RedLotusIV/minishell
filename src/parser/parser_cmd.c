@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 01:34:57 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:38:28 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_cmd	**parse_cmd(t_token *head)
 {
 	t_cmd	**cmd;
-	t_cmd	**tmp;
 	int		count;
 
 	count = 0;
@@ -24,8 +23,6 @@ t_cmd	**parse_cmd(t_token *head)
 	if (!cmd)
 		return (NULL);
 	allocate_cmd(cmd, head);
-	tmp = cmd;
-	print_command_details(tmp);
 	return (cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 23:54:21 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 19:29:19 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:31:16 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ t_pipe	*build_tree(t_cmd **cmd)
 		if (!tmp_pipe)
 			return (NULL);
 	}
-	print_tree(root);
 	return (root);
 }
 

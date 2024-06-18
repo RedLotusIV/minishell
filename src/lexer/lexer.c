@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 00:10:13 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/15 17:40:31 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:39:39 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_token	*tokenizer(char **commands)
 		i++;
 	}
 	head = tmp;
-	print_tokens(&head);
 	return (head);
 }
 

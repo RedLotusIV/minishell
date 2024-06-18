@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 20:06:01 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:40:33 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int ac, char **av, char **env)
 	root = readfrom();
 	if (!root)
 		exit(-1);
+	
 	return (0);
 }
 
@@ -49,9 +50,16 @@ t_pipe	*readfrom(void)
 		parser->head = tokenizer(parser->result);
 		if (!parser->head)
 			return (NULL);
+		// print_tokens(&parser->head);
 		checking_parsing(parser->head);
 		parser->cmd = parse_cmd(parser->head);
+		if (!parser->cmd)
+			return (NULL);
+		// print_command_details(parser->cmd);
 		root = build_tree(parser->cmd);
+		if (!root)
+			return (NULL);
+		// print_tree(root);
 	}
 	return (root);
 }

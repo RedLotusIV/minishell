@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:45:41 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 18:50:35 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 13:42:22 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	**mini_parsing(char *command)
 	result = malloc(sizeof(char *) * (count + 1));
 	if (!result)
 		return (NULL);
-	printf("count = %d\n", count);
 	while (command[i])
 	{
 		while (command[i] == ' ' || command[i] == '\t' || command[i] == '\n'
@@ -118,7 +117,6 @@ char	**mini_parsing(char *command)
 			}
 			result[k][l] = '\0';
 			k++;
-			printf("len = %d\n", l);
 		}
 	}
 	result[k] = NULL;
@@ -174,16 +172,4 @@ int count_parse(char *command)
 	return (l);
 }
 
-void	free_strings(char **strings)
-{
-	int	i;
 
-	i = 0;
-	while (strings[i])
-	{
-		free(strings[i]);
-		i++;
-	}
-	if (strings)
-		free(strings);
-}
