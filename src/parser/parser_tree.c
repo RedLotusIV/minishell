@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 23:54:21 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/18 13:31:16 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:59:25 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ t_pipe	*assign_cmd_to_left(t_pipe *tmp_pipe, t_cmd **tmp, int *i, int *pipes)
 	return (tmp_pipe);
 }
 
-t_pipe	*assign_cmd_to_pipe(t_pipe *tmp_pipe, t_cmd **tmp, int *i, int *pipes)
+t_pipe	*assign_cmd_to_pipe(t_pipe *tmp_pipe, t_cmd **cmd, int *i, int *pipes)
 {
+	t_cmd	**tmp;
+
+	tmp = cmd;
 	tmp_pipe = assign_cmd_to_right(tmp_pipe, tmp, i);
 	tmp_pipe = assign_cmd_to_left(tmp_pipe, tmp, i, pipes);
 	return (tmp_pipe);
@@ -63,15 +66,13 @@ t_pipe	*build_tree(t_cmd **cmd)
 {
 	int		i;
 	int		pipes;
-	int 	cmd_count;
+	int		cmd_count;
 	t_pipe	*root;
-	t_cmd	**tmp;
 	t_pipe	*tmp_pipe;
 
 	i = 0;
 	pipes = pipes_in_cmds(cmd);
 	cmd_count = pipes + 1;
-	tmp = cmd;
 	root = (t_pipe *)malloc(sizeof(t_pipe));
 	if (!root)
 		return (NULL);
@@ -80,7 +81,7 @@ t_pipe	*build_tree(t_cmd **cmd)
 	tmp_pipe = root;
 	while (i < cmd_count)
 	{
-		tmp_pipe = assign_cmd_to_pipe(tmp_pipe, tmp, &i, &pipes);
+		tmp_pipe = assign_cmd_to_pipe(tmp_pipe, cmd, &i, &pipes);
 		if (!tmp_pipe)
 			return (NULL);
 	}
@@ -95,19 +96,4 @@ int	pipes_in_cmds(t_cmd **cmd)
 	while (cmd[count])
 		count++;
 	return (count - 1);
-}
-
-void	print_tree(t_pipe *root)
-{
-	if (root == NULL)
-		return ;
-	if (root->right && root->right->args && root->right->args[0])
-		printf("right is a cmd: %s\n", root->right->args[0]);
-	if (root->left_type == PIPE_CMD && root->left && root->left->cmd
-		&& root->left->cmd->args && root->left->cmd->args[0])
-		printf("left is a cmd: %s\n", root->left->cmd->args[0]);
-	else if (root->left_type == PIPE_PIPE)
-		printf("left is a Pipe\n");
-	if (root->left_type == PIPE_PIPE && root->left && root->left->pipe)
-		print_tree(root->left->pipe);
 }

@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:44:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/17 20:05:05 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:56:27 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int			pipes_in_cmds(t_cmd **cmd);
 void		print_tree(t_pipe *root);
 void		checking_parsing(t_token *head);
 void		parsing_error(char *message, int status);
+int			setting_parser(char *command, char ***result, int *i, int *k);
 
 #endif

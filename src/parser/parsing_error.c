@@ -28,7 +28,7 @@ void	checking_parsing(t_token *head)
 			else if (current->next->type != WORD)
 				(parsing_error("|", 2));
 		}
-		else if (current->type == REDIR || current->type == HEREDOC 
+		else if (current->type == REDIR || current->type == HEREDOC
 			|| current->type == INPUT || current->type == APPEND)
 		{
 			if (!current->next)

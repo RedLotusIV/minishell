@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 12:02:55 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/18 13:38:00 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/18 14:30:53 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,37 +121,3 @@ void	print_command_details(t_cmd **cmd)
 	}
 	printf("++++++++++++++++++++++++++++++++++++++++++++\n");
 }
-/*
-void	allocate_cmd(t_cmd **cmd, t_token *head)
-{
-	int		i;
-	int		count;
-	t_token	*current;
-	t_token	*before;
-	t_token	*tmp_token;
-
-	i = 0;
-	current = head;
-	before = head;
-	while (current)
-	{
-		tmp_token = current;
-		cmd[i] = malloc(sizeof(t_cmd));
-		if (!cmd[i])
-			return ;
-		process_token(&current, &before, cmd, i);
-		count = count_args(tmp_token, current);
-		cmd[i]->args = malloc(sizeof(char *) * (count + 1));
-		if (!cmd[i]->args)
-			return ;
-		fill_args(tmp_token, current, cmd[i]);
-		if (current && current->type == PIPE)
-		{
-			before = current;
-			current = current->next;
-		}
-		i++;
-	}
-	cmd[i] = NULL;
-}
-*/
