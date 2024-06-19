@@ -27,8 +27,8 @@ char	**mini_parsing(char *command)
 		j = i;
 		if (command[i] == '\"' || command[i] == '\'')
 			i = skip_quotes(command, i);
-		if (command[i] && (command[i] == '|'
-				|| command[i] == '<' || command[i] == '>') && (j == i))
+		if (command[i] && (command[i] == '|' || command[i] == '<'
+				|| command[i] == '>') && (j == i))
 			i = skip_special_char(command, i);
 		else
 			i = skip_everything_else(command, i);

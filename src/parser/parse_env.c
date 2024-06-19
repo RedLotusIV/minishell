@@ -6,17 +6,17 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 16:39:25 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/19 17:21:10 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:58:37 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/parser.h"
 
-char **set_path(char **env)
+char	**set_path(char **env)
 {
-	char **envp;
-	int i;
-	
+	char	**envp;
+	int		i;
+
 	i = 0;
 	while (ft_strncmp(env[i], "PATH=", 5))
 		i++;
