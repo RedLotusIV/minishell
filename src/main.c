@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/19 17:37:30 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:21:27 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	main(int ac, char **av, char **env)
 {
 	t_pipe	*root;
-	char	*prompt;
 	char	**path;
 
 	if (ac != 1 || av[1])
@@ -39,10 +38,13 @@ t_pipe	*readfrom(char **path)
 	root = NULL;
 	while (1)
 	{
+		char *prompt = ft_strjoin( "minishell$", getenv("PWD"));
+		prompt = ft_strjoin(prompt, ": ");
+		prompt = set_pwd(prompt);
 		parser = malloc(sizeof(t_parser));
 		if (!parser)
 			return (NULL);
-		parser->line = readline("minishell$ ");
+		parser->line = readline(prompt);
 		if (!parser->line)
 			break ;
 		add_history(parser->line);

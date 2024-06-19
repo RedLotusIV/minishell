@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:44:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/19 17:18:39 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:22:21 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ int			setting_parser(char *command, char ***result, int *i, int *k);
 char		**set_path(char **env);
 char		*get_path(char *command, char **path);
 void		testing_commands(t_pipe *root, char **path);
+void		replaceWord(char* str, char* oldWord, char* newWord);
+char		*set_pwd(char *old_prompt);
 
 #endif
