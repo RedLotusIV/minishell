@@ -78,6 +78,6 @@ typedef struct	s_parser
 # include "expander.h"
 
 t_pipe	*build_tree(t_cmd **cmd);
-t_pipe	*readfrom(void);
+t_pipe	*readfrom(char **path);
 
 #endif

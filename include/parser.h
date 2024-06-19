@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:44:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/18 17:56:27 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:18:39 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 
 char		**mini_parsing(char *commands);
 int			count_parse(char *commands);
-void		free_strings(char **strings);
-void		free_parser(t_parser *s);
-char		**duplicate_pointer_array(char **commands);
 void		allocate_cmd(t_cmd **cmd, t_token *head);
 void        add_redirection(t_cmd *cmd, t_token *redir_token, char *arg);
 int			count_args(t_token *start, t_token *end);
@@ -35,5 +32,8 @@ void		print_tree(t_pipe *root);
 void		checking_parsing(t_token *head);
 void		parsing_error(char *message, int status);
 int			setting_parser(char *command, char ***result, int *i, int *k);
+char		**set_path(char **env);
+char		*get_path(char *command, char **path);
+void		testing_commands(t_pipe *root, char **path);
 
 #endif
