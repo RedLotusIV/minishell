@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:56:25 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/18 18:01:21 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:21:30 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*copy_segment(char *command, int start, int end)
 		else
 			result[l++] = command[j++];
 	}
-	result[++l] = '\0';
+	result[l] = '\0';
 	return (result);
 }
 

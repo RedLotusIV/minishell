@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/21 15:43:27 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/23 00:25:39 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ t_pipe	*readfrom(char **path)
 	t_parser	*parser;
 	t_pipe		*root;
 	char 		*prompt;
+	char 		*cwd;
 
 	root = NULL;
 	while (1)
 	{
-		prompt = ft_strjoin( "minishell$", getenv("PWD"));
+		cwd = getcwd(NULL, 0);
+		prompt = ft_strjoin( "minishell$", cwd);
 		prompt = ft_strjoin(prompt, ": ");
 		prompt = set_pwd(prompt);
 		parser = malloc(sizeof(t_parser));
@@ -67,7 +69,8 @@ t_pipe	*readfrom(char **path)
 		print_tree(root);
 		testing_commands(root, path);
 		execute_commands(root);
-		free(prompt);
+		// printf("%s\n", prompt);
+		free_parser(parser, root, prompt, cwd);
 	}
 	return (root);
 }

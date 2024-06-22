@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 19:37:35 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/22 18:13:36 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/22 22:18:21 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	checking_parsing(t_token *head)
 
 void	parsing_error(char *message, int status)
 {
+	(void)status;
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd("'\n", 2);
