@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 16:54:04 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/19 17:57:21 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:33:14 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ char	*get_path(char *command, char **path)
 	if (!command || !path)
 		return (NULL);
 	i = 0;
+	if (!ft_strcmp(command, "cd") || !ft_strcmp(command, "export")
+		|| !ft_strcmp(command, "unset") || !ft_strcmp(command, "exit") || !ft_strcmp(command, "echo") || !ft_strcmp(command, "pwd") || !ft_strcmp(command, "env"))
+		return (command);
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");

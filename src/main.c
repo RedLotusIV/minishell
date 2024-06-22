@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/19 21:21:27 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:43:27 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ t_pipe	*readfrom(char **path)
 {
 	t_parser	*parser;
 	t_pipe		*root;
+	char 		*prompt;
 
 	root = NULL;
 	while (1)
 	{
-		char *prompt = ft_strjoin( "minishell$", getenv("PWD"));
+		prompt = ft_strjoin( "minishell$", getenv("PWD"));
 		prompt = ft_strjoin(prompt, ": ");
 		prompt = set_pwd(prompt);
 		parser = malloc(sizeof(t_parser));
@@ -54,17 +55,19 @@ t_pipe	*readfrom(char **path)
 		parser->head = tokenizer(parser->result);
 		if (!parser->head)
 			return (NULL);
-		// print_tokens(&parser->head);
+		print_tokens(&parser->head);
 		checking_parsing(parser->head);
 		parser->cmd = parse_cmd(parser->head);
 		if (!parser->cmd)
 			return (NULL);
-		// print_command_details(parser->cmd);
+		print_command_details(parser->cmd);
 		root = build_tree(parser->cmd);
 		if (!root)
 			return (NULL);
-		// print_tree(root);
+		print_tree(root);
 		testing_commands(root, path);
+		execute_commands(root);
+		free(prompt);
 	}
 	return (root);
 }

@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 14:29:40 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/18 13:38:28 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/20 20:10:32 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ void	initialize_cmd(t_cmd **cmd, t_token *current, int i)
 	tmp_token = current;
 	count = count_args(tmp_token, NULL);
 	cmd[i]->args = malloc(sizeof(char *) * (count + 1));
+	if (!cmd[i]->args)
+		return ;
+	cmd[i]->count = count;
 	if (!cmd[i]->args)
 		return ;
 	fill_args(tmp_token, NULL, cmd[i]);

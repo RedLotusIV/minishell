@@ -46,6 +46,7 @@ typedef struct s_redirection
 typedef struct s_cmd
 {
 	char			**args;
+	int				count;
 	t_redirection	*redirections;
 }				t_cmd;
 
@@ -76,6 +77,8 @@ typedef struct	s_parser
 # include "parser.h"
 # include "utils.h"
 # include "expander.h"
+# include "executor.h"
+# include "builtins.h"
 
 t_pipe	*build_tree(t_cmd **cmd);
 t_pipe	*readfrom(char **path);
