@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:56:25 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/22 22:21:30 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:05:04 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,29 @@ int	skip_special_char(char *command, int i)
 
 int	skip_everything_else(char *command, int i)
 {
-	while (command[i] && command[i] != '|' && command[i] != '<'
-		&& command[i] != '>' && command[i] != ' ' && command[i] != '\t'
-		&& command[i] != '\n')
-		i++;
+	int tmp;
+
+	tmp = 0;
+	while (command[i])
+	{
+		while (command[i] && command[i] != '|' && command[i] != '<'
+			&& command[i] != '>' && command[i] != ' ' && command[i] != '\t'
+			&& command[i] != '\n' && command[i] != '\"' && command[i] != '\'')
+			i++;
+		if (command[i] == '\"' || command[i] == '\'')
+		{
+			tmp = command[i];
+			i++;
+			while (command[i] && command[i] != tmp)
+				i++;
+			if (command[i] == tmp)
+				i++;
+		}
+		if (command[i] == '|' || command[i] == '<'
+			|| command[i] == '>' || command[i] == ' ' || command[i] == '\t'
+			|| command[i] == '\n')
+			break ;
+	}
 	return (i);
 }
 
