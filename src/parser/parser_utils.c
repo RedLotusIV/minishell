@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 18:45:41 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/18 17:58:51 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/23 18:23:31 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	count_parse(char *command)
 		else if (command[i])
 			i = handle_regular_characters(command, i, &l, &tmp);
 	}
-	printf("length = %d\n", l);
 	return (l);
 }
 

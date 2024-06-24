@@ -65,8 +65,10 @@ typedef union s_left
 
 typedef struct	s_parser
 {
-	char	*line;
+	char	**env;
 	char	**result;
+	char	*line;
+	char	*prompt;
 	t_token	*head;
 	t_cmd	**cmd;
 }				t_parser;

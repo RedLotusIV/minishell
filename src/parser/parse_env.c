@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 16:39:25 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/19 21:31:51 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/23 15:15:53 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,24 @@ char	**set_path(char **env)
 	envp = ft_split(env[i] + 5, ':');
 	return (envp);
 }
-char *set_pwd(char *prompt)
+
+char	*set_cwd(void)
 {
-	replaceWord(prompt, ft_strjoin("/home/", getenv("USER")), "~");
+	char *cwd;
+	char *prompt;
+	char *tmp;
+	
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		ft_putstr_fd("Error: Can't Get Current Working Directory\n", 2);
+	prompt = ft_strjoin( "minishell$", cwd);
+	free(cwd);
+	if (!prompt)
+		ft_putstr_fd("Error: Can't Allocate Memory\n", 2);
+	tmp = prompt;
+	prompt = ft_strjoin(prompt, ": ");
+	free(tmp);
+	if (!prompt)
+		ft_putstr_fd("Error: Can't Allocate Memory\n", 2);
 	return (prompt);
-}
-
-void replaceWord(char* str, char* oldword, char* newword)
-{
-	char *pos;
-	char temp[1000];
-	int index;
-	int owlen;
-
-	index = 0;
-	owlen = ft_strlen(oldword);
-	pos = strstr(str, oldword);
-	while (pos)
-	{
-		ft_strcpy(temp, str);
-		index = pos - str;
-		str[index] = '\0';
-		strcat(str, newword);
-		strcat(str, temp + index + owlen);
-		pos = strstr(str, oldword);
-	}
 }

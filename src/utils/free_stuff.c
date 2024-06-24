@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 22:25:56 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/23 00:20:31 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/23 18:49:16 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	free_tokens(t_token **head)
 	{
 		tmp = current;
 		current = current->next;
-		free(tmp->value);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
-		tmp = NULL;
 	}
 	*head = NULL;
 }
@@ -33,15 +33,17 @@ void	free_char_array(char **array)
 {
 	int i;
 
+	if (!array)
+		return ;
 	i = 0;
 	while (array[i])
 	{
-		if (array[i])
-			free(array[i]);
+		free(array[i]);
+		array[i] = NULL;
 		i++;
 	}
-	if (array)
-		free(array);
+	free(array);
+	array = NULL;
 }
 
 void	free_tree(t_pipe *root)
@@ -57,30 +59,32 @@ void	free_tree(t_pipe *root)
 	{
 		if (root->left_type == PIPE_CMD)
 		{
-			if (root->left->cmd) {
+			if (root->left->cmd)
+			{
 				free_cmd(root->left->cmd);
 				root->left->cmd = NULL;
 			}
 		}
 		else
-		{
 			free_tree(root->left->pipe);
-			root->left->pipe = NULL;
-		}
+		free(root->left);
+		root->left = NULL;
 	}
 	free(root);
+	root = NULL;
 }
 
 void	free_cmd(t_cmd *cmd)
 {
-	if (cmd)
-	{
-		if (cmd->args)
-			free_char_array(cmd->args);
-		if (cmd->redirections)
-			free_redirections(cmd->redirections);
-		free(cmd);
-	}
+	if (!cmd)
+		return;
+
+	if (cmd->args)
+		free_char_array(cmd->args);
+	if (cmd->redirections)
+		free_redirections(cmd->redirections);
+	free(cmd);
+	cmd = NULL;
 }
 
 void	free_redirections(t_redirection *redirections)
@@ -97,19 +101,23 @@ void	free_redirections(t_redirection *redirections)
 	}
 	redirections = NULL;
 }
-void free_parser(t_parser *parser, t_pipe *root, char *prompt, char *cwd)
+
+void free_parser(t_parser *parser, t_pipe *root)
 {
-	if (cwd)
-		free(cwd);
-	if (prompt)
-		free(prompt);
+	if (parser)
+	{
+		if (parser->prompt)
+			free(parser->prompt);
+		if (parser->line)
+			free(parser->line);
+		if (parser->result)
+			free_char_array(parser->result);
+		if (parser->head)
+			free_tokens(&parser->head);
+		if (parser->cmd)
+			free(parser->cmd);
+		free(parser);
+	}
 	if (root)
 		free_tree(root);
-	if (parser && parser->line)
-		free(parser->line);
-	if (parser && parser->result)
-		free_char_array(parser->result);
-	if (parser && parser->head)
-		free_tokens(&parser->head);
-	free(parser);
 }

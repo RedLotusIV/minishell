@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/23 00:25:39 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/23 18:48:10 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,43 +34,50 @@ t_pipe	*readfrom(char **path)
 {
 	t_parser	*parser;
 	t_pipe		*root;
-	char 		*prompt;
-	char 		*cwd;
 
 	root = NULL;
 	while (1)
 	{
-		cwd = getcwd(NULL, 0);
-		prompt = ft_strjoin( "minishell$", cwd);
-		prompt = ft_strjoin(prompt, ": ");
-		prompt = set_pwd(prompt);
 		parser = malloc(sizeof(t_parser));
 		if (!parser)
 			return (NULL);
-		parser->line = readline(prompt);
+		parser->env = path;
+		parser->prompt = set_cwd();
+		parser->line = readline(parser->prompt);
 		if (!parser->line)
-			break ;
+		{
+			free(parser->prompt);
+			free(parser->line);
+			free(parser);
+			return (NULL);
+		}
 		add_history(parser->line);
 		parser->result = mini_parsing(parser->line);
 		if (!parser->result)
-			return (NULL);
+		{
+			free(parser->prompt);
+			free(parser->line);
+			free(parser->result);
+			free(parser);
+			continue;
+		}
 		parser->head = tokenizer(parser->result);
 		if (!parser->head)
-			return (NULL);
+			return (free_parser(parser, root), NULL);
 		print_tokens(&parser->head);
 		checking_parsing(parser->head);
 		parser->cmd = parse_cmd(parser->head);
 		if (!parser->cmd)
-			return (NULL);
+			return (free_parser(parser, root), NULL);
 		print_command_details(parser->cmd);
 		root = build_tree(parser->cmd);
 		if (!root)
-			return (NULL);
+			return (free_parser(parser, root), NULL);
 		print_tree(root);
 		testing_commands(root, path);
 		execute_commands(root);
 		// printf("%s\n", prompt);
-		free_parser(parser, root, prompt, cwd);
+		free_parser(parser, root);
 	}
 	return (root);
 }
