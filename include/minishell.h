@@ -6,6 +6,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <signal.h>
+# include <bits/sigaction.h>
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -71,6 +72,7 @@ typedef struct	s_parser
 	char	*prompt;
 	t_token	*head;
 	t_cmd	**cmd;
+	t_pipe	*root;
 }				t_parser;
 
 // project libraries
@@ -81,8 +83,9 @@ typedef struct	s_parser
 # include "expander.h"
 # include "executor.h"
 # include "builtins.h"
+# include "signals.h"
 
-t_pipe	*build_tree(t_cmd **cmd);
-t_pipe	*readfrom(char **path);
+t_pipe		*build_tree(t_cmd **cmd);
+t_parser	*readfrom(char **path);
 
 #endif

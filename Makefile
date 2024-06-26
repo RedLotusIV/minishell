@@ -6,7 +6,7 @@
 #    By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/20 22:18:52 by amouhand          #+#    #+#              #
-#    Updated: 2024/06/22 23:29:45 by amouhand         ###   ########.fr        #
+#    Updated: 2024/06/24 17:42:56 by amouhand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC =	src/main.c src/utils/cmd_utils.c src/parser/parser_utils.c src/parser/pars
 		src/parser/parser_cmd.c src/parser/parser_cmd_utils.c src/parser/parsing_error.c\
 		src/utils/parsing_utils.c src/parser/testing_commands.c src/prompt.c src/parser/parse_env.c\
 		src/executor/executor.c src/builtins/cd.c src/utils/free_stuff.c\
+		src/signals/singal_handling.c\
 
 OBJ = $(SRC:.c=.o)
 

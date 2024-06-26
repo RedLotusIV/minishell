@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 22:01:52 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/23 18:36:50 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:58:34 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_char_array(char **array);
 void	free_tree(t_pipe *root);
 void	free_cmd(t_cmd *cmd);
 void	free_redirections(t_redirection *redirections);
-void	free_parser(t_parser *parser, t_pipe *root);
+void	free_parser(t_parser *parser);
 char	*set_cwd(void);
 
 #endif

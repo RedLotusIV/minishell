@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/22 22:25:56 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/23 18:49:16 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:58:20 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	free_redirections(t_redirection *redirections)
 	redirections = NULL;
 }
 
-void free_parser(t_parser *parser, t_pipe *root)
+void free_parser(t_parser *parser)
 {
 	if (parser)
 	{
@@ -116,8 +116,8 @@ void free_parser(t_parser *parser, t_pipe *root)
 			free_tokens(&parser->head);
 		if (parser->cmd)
 			free(parser->cmd);
+		if (parser->root)
+			free_tree(parser->root);
 		free(parser);
 	}
-	if (root)
-		free_tree(root);
 }

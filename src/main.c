@@ -6,7 +6,7 @@
 /*   By: amouhand <amouhand@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 23:10:20 by amouhand          #+#    #+#             */
-/*   Updated: 2024/06/23 18:48:10 by amouhand         ###   ########.fr       */
+/*   Updated: 2024/06/26 00:07:21 by amouhand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,27 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_pipe	*root;
-	char	**path;
+	t_parser	*parser;
+	char		**path;
 
+	parser = NULL;
 	if (ac != 1 || av[1])
 	{
 		write(2, "Error: No Args Needed\n", 23);
 		exit(1);
 	}
 	path = set_path(env);
-	root = readfrom(path);
-	if (!root)
+	parser = readfrom(path);
+	if (!parser)
 		exit(1);
-	testing_commands(root, path);
+	testing_commands(parser->root, path);
 	return (0);
 }
 
-t_pipe	*readfrom(char **path)
+t_parser	*readfrom(char **path)
 {
 	t_parser	*parser;
-	t_pipe		*root;
-
-	root = NULL;
+	
 	while (1)
 	{
 		parser = malloc(sizeof(t_parser));
@@ -63,21 +62,35 @@ t_pipe	*readfrom(char **path)
 		}
 		parser->head = tokenizer(parser->result);
 		if (!parser->head)
-			return (free_parser(parser, root), NULL);
+		{
+			free(parser->prompt);
+			free(parser->line);
+			free_char_array(parser->result);
+			free_tokens(&parser->head);
+			free(parser);
+			return (NULL);	
+		}
 		print_tokens(&parser->head);
 		checking_parsing(parser->head);
 		parser->cmd = parse_cmd(parser->head);
 		if (!parser->cmd)
-			return (free_parser(parser, root), NULL);
+		{
+			free(parser->prompt);
+			free(parser->line);
+			free_char_array(parser->result);
+			free_tokens(&parser->head);
+			// free_cmd(parser->cmd);
+			free(parser);
+		}
 		print_command_details(parser->cmd);
-		root = build_tree(parser->cmd);
-		if (!root)
-			return (free_parser(parser, root), NULL);
-		print_tree(root);
-		testing_commands(root, path);
-		execute_commands(root);
+		parser->root = build_tree(parser->cmd);
+		if (!parser->root)
+			return (free_parser(parser), NULL);
+		print_tree(parser->root);
+		testing_commands(parser->root, path);
+		execute_commands(parser->root);
 		// printf("%s\n", prompt);
-		free_parser(parser, root);
+		free_parser(parser);
 	}
-	return (root);
+	return (parser);
 }
